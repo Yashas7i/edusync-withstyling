@@ -1,4 +1,3 @@
-// src/pages/AssessmentResultsPage.jsx
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../api/axios';
@@ -7,6 +6,7 @@ const AssessmentResultsPage = () => {
   const { id } = useParams();
   const [results, setResults] = useState([]);
   const [title, setTitle] = useState('');
+  const [maxScore, setMaxScore] = useState(null);
 
   useEffect(() => {
     fetchAssessmentTitle();
@@ -17,6 +17,7 @@ const AssessmentResultsPage = () => {
     try {
       const res = await api.get(`/Assessments/${id}`);
       setTitle(res.data.Title);
+      setMaxScore(res.data.MaxScore);
     } catch (err) {
       console.error('Error fetching assessment title', err);
     }
@@ -51,7 +52,7 @@ const AssessmentResultsPage = () => {
               <tr key={r.ResultId}>
                 <td>{index + 1}</td>
                 <td>{r.UserName}</td>
-                <td>{r.Score}</td>
+                <td>{r.Score}{maxScore !== null ? ` / ${maxScore}` : ''}</td>
                 <td>{new Date(r.AttemptDate).toLocaleString('en-IN')}</td>
               </tr>
             ))}

@@ -5,6 +5,7 @@ const ResultsPage = () => {
   const [assessments, setAssessments] = useState([]);
   const [selectedAssessmentId, setSelectedAssessmentId] = useState('');
   const [results, setResults] = useState([]);
+  const [maxScore, setMaxScore] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -24,8 +25,9 @@ const ResultsPage = () => {
     try {
       setLoading(true);
       const res = await api.get(`/Results/Assessment/${assessmentId}`);
-      console.log('Results:', res.data); // for debug
       setResults(res.data);
+      const assessment = assessments.find(a => a.AssessmentId === assessmentId);
+      setMaxScore(assessment ? assessment.MaxScore : null);
     } catch (err) {
       console.error('Failed to load results', err);
     } finally {
@@ -40,6 +42,7 @@ const ResultsPage = () => {
       fetchResults(id);
     } else {
       setResults([]);
+      setMaxScore(null);
     }
   };
 
@@ -82,10 +85,8 @@ const ResultsPage = () => {
               <tr key={r.ResultId || i}>
                 <td className="p-2 border">{i + 1}</td>
                 <td className="p-2 border">{r.UserName || 'N/A'}</td>
-                <td className="p-2 border">{r.Score}</td>
-                <td className="p-2 border">
-                  {r.AttemptDate ? new Date(r.AttemptDate).toLocaleString() : 'N/A'}
-                </td>
+                <td className="p-2 border">{r.Score}{maxScore !== null ? ` / ${maxScore}` : ''}</td>
+                <td className="p-2 border">{r.AttemptDate ? new Date(r.AttemptDate).toLocaleString() : 'N/A'}</td>
               </tr>
             ))}
           </tbody>

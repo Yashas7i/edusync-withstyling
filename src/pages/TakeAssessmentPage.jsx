@@ -33,14 +33,17 @@ const TakeAssessmentPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const score = assessment.Questions.reduce((total, q, index) => {
-      return total + (answers[index] === q.answer ? 1 : 0);
+    const totalQuestions = assessment.Questions.length;
+    const scorePerQuestion = assessment.MaxScore / totalQuestions;
+    const rawScore = assessment.Questions.reduce((total, q, index) => {
+      return total + (answers[index] === q.answer ? scorePerQuestion : 0);
     }, 0);
+    const finalScore = Math.round(rawScore);
 
     try {
       await api.post('/Results', {
         AssessmentId: assessment.AssessmentId,
-        Score: score
+        Score: finalScore
       });
       setSubmitted(true);
       setTimeout(() => {
