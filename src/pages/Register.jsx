@@ -42,9 +42,9 @@ const Register = () => {
             <h2 className="text-2xl font-semibold text-indigo-800 dark:text-indigo-300">Join EduSync</h2>
             <p className="mt-2 text-sm text-indigo-600 dark:text-indigo-200">Shape your learning journey.</p>
             <img
-              src="https://undraw.co/api/illustrations/8e52458c-b356-45a5-91aa-7070d7cf3833"
-              alt="Education Register"
-              className="mt-4 w-full max-w-xs mx-auto"
+              src="/education2.svg"
+              alt="Learning Illustration"
+              className="mt-4 max-h-64 w-auto mx-auto object-contain"
             />
           </div>
         </div>

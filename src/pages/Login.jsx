@@ -36,10 +36,11 @@ const Login = () => {
             <h2 className="text-2xl font-semibold text-indigo-800 dark:text-indigo-300">Welcome Back!</h2>
             <p className="mt-2 text-sm text-indigo-600 dark:text-indigo-200">Learn. Grow. Succeed.</p>
             <img
-              src="https://undraw.co/api/illustrations/597b1e9f-fb55-4077-8827-e963588c06b5"
-              alt="Education"
-              className="mt-4 w-full max-w-xs mx-auto"
+               src="/education1.svg"
+               alt="Education Illustration"
+               className="mt-4 w-full max-w-xs mx-auto"
             />
+
           </div>
         </div>
 
