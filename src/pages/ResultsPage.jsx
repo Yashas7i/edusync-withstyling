@@ -1,6 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import api from '../api/axios';
 
+const formatDateToIST = (dateString) => {
+  return new Intl.DateTimeFormat('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    hour12: true,
+  }).format(new Date(dateString + 'Z'));
+};
+
 const ResultsPage = () => {
   const [assessments, setAssessments] = useState([]);
   const [selectedAssessmentId, setSelectedAssessmentId] = useState('');
@@ -86,7 +99,7 @@ const ResultsPage = () => {
                 <td className="p-2 border">{i + 1}</td>
                 <td className="p-2 border">{r.UserName || 'N/A'}</td>
                 <td className="p-2 border">{r.Score}{maxScore !== null ? ` / ${maxScore}` : ''}</td>
-                <td className="p-2 border">{r.AttemptDate ? new Date(r.AttemptDate).toLocaleString() : 'N/A'}</td>
+                <td className="p-2 border">{r.AttemptDate ? formatDateToIST(r.AttemptDate) : 'N/A'}</td>
               </tr>
             ))}
           </tbody>

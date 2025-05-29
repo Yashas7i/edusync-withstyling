@@ -2,6 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../api/axios';
 
+const formatDateToIST = (dateString) => {
+  return new Intl.DateTimeFormat('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    hour12: true
+  }).format(new Date(dateString + 'Z'));
+};
+
 const AssessmentResultsPage = () => {
   const { id } = useParams();
   const [results, setResults] = useState([]);
@@ -53,7 +66,7 @@ const AssessmentResultsPage = () => {
                 <td>{index + 1}</td>
                 <td>{r.UserName}</td>
                 <td>{r.Score}{maxScore !== null ? ` / ${maxScore}` : ''}</td>
-                <td>{new Date(r.AttemptDate).toLocaleString('en-IN')}</td>
+                <td>{formatDateToIST(r.AttemptDate)}</td>
               </tr>
             ))}
           </tbody>

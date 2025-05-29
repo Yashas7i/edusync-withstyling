@@ -35,16 +35,27 @@ const StudentAssessmentListPage = () => {
 
   return (
     <div className="p-6">
-      <h2 className="text-3xl font-bold mb-4 text-slate-800 dark:text-white">Assessments for: {courseTitle}</h2>
+      <h2 className="text-3xl font-bold mb-4 text-slate-800 dark:text-white">
+        Assessments for: {courseTitle}
+      </h2>
+
       {assessments.length === 0 ? (
         <p>No assessments found.</p>
       ) : (
         <div className="space-y-4">
           {assessments.map((a) => (
-            <div key={a.AssessmentId} className="bg-white dark:bg-slate-800 shadow rounded p-4 border dark:border-slate-700">
-              <h3 className="text-xl font-semibold text-indigo-600 dark:text-indigo-300">{a.Title}</h3>
-              <p className="text-sm text-slate-500">Max Score: 10</p>
-              <button onClick={() => handleTake(a.AssessmentId)} className="mt-3 btn btn-outline-success">
+            <div
+              key={a.AssessmentId}
+              className="bg-white dark:bg-slate-800 shadow rounded p-4 border dark:border-slate-700"
+            >
+              <h3 className="text-xl font-semibold text-indigo-600 dark:text-indigo-300">
+                {a.Title}
+              </h3>
+
+              <button
+                onClick={() => handleTake(a.AssessmentId)}
+                className="mt-3 btn btn-outline-success"
+              >
                 Take Quiz
               </button>
             </div>

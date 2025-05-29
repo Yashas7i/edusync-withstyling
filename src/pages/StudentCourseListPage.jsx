@@ -26,6 +26,11 @@ const StudentCourseListPage = () => {
     navigate(`/student/courses/${courseId}/assessments`);
   };
 
+  const formatMediaUrl = (url) => {
+    if (!url) return null;
+    return url.startsWith('http://') || url.startsWith('https://') ? url : `https://${url}`;
+  };
+
   return (
     <div className="p-6">
       <h2 className="text-3xl font-bold mb-4 text-slate-800 dark:text-white">Available Courses</h2>
@@ -53,7 +58,7 @@ const StudentCourseListPage = () => {
 
               {course.MediaUrl && (
                 <a
-                  href={course.MediaUrl}
+                  href={formatMediaUrl(course.MediaUrl)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-block text-sm text-indigo-600 dark:text-indigo-400 underline mt-2"
