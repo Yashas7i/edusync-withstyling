@@ -19,7 +19,6 @@ const Login = () => {
       localStorage.setItem('email', res.data.Email);
       localStorage.setItem('role', res.data.Role);
 
-      // ✅ Redirect all users to the unified dashboard
       navigate('/dashboard');
     } catch {
       setError('Invalid email or password.');
@@ -27,8 +26,9 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-100 dark:bg-slate-800 px-4 transition-colors duration-300">
-      <div className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 bg-white dark:bg-slate-700 shadow-lg rounded-2xl overflow-hidden">
+    // This container uses padding to center the form
+    <div className="bg-slate-100 dark:bg-slate-800 px-4 py-16 transition-colors duration-300">
+      <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 bg-white dark:bg-slate-700 shadow-lg rounded-2xl overflow-hidden">
         
         {/* Left - Illustration */}
         <div className="hidden md:flex items-center justify-center bg-indigo-100 dark:bg-indigo-900 p-6">
@@ -40,16 +40,15 @@ const Login = () => {
                alt="Education Illustration"
                className="mt-4 w-full max-w-xs mx-auto"
             />
-
           </div>
         </div>
 
         {/* Right - Form */}
-        <div className="p-8 sm:p-10">
-          <h2 className="text-3xl font-bold text-slate-800 dark:text-white mb-6">Login to EduSync</h2>
+        <div className="p-6 sm:p-8 flex flex-col justify-center">
+          <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-4">Login to EduSync</h2>
           {error && <p className="text-red-500 mb-3 text-sm">{error}</p>}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-200">Email</label>
               <input
@@ -78,8 +77,8 @@ const Login = () => {
             </button>
           </form>
 
-          <p className="text-sm mt-6 text-center text-slate-600 dark:text-slate-300">
-            Don’t have an account?{" "}
+          <p className="text-sm mt-4 text-center text-slate-600 dark:text-slate-300">
+            Don't have an account?{" "}
             <Link to="/register" className="text-indigo-500 hover:underline">Register here</Link>
           </p>
         </div>
