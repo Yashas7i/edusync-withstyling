@@ -1,8 +1,9 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://localhost:7011/api',
+  baseURL: 'https://edusyncapi-brc7fmdmhjbbfcdx.japaneast-01.azurewebsites.net/api',
 });
+
 
 api.interceptors.request.use(config => {
   const token = localStorage.getItem('token');
