@@ -34,6 +34,7 @@ const StudentCourseListPage = () => {
   return (
     <div className="p-6">
       <h2 className="text-3xl font-bold mb-4 text-slate-800 dark:text-white">Available Courses</h2>
+
       {loading ? (
         <p>Loading...</p>
       ) : courses.length === 0 ? (
@@ -63,7 +64,7 @@ const StudentCourseListPage = () => {
                   rel="noopener noreferrer"
                   className="inline-block text-sm text-indigo-600 dark:text-indigo-400 underline mt-2"
                 >
-                  📺 View Media Content
+                  📥 Download Material
                 </a>
               )}
 

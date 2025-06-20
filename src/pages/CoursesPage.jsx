@@ -4,7 +4,8 @@ import api from '../api/axios';
 
 const CoursesPage = () => {
   const [courses, setCourses] = useState([]);
-  const [form, setForm] = useState({ Title: '', Description: '', MediaUrl: '' });
+  const [form, setForm] = useState({ Title: '', Description: '' });
+  const [file, setFile] = useState(null);
   const [editingCourseId, setEditingCourseId] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -30,15 +31,35 @@ const CoursesPage = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      if (editingCourseId) {
-        await api.put(`/Courses/${editingCourseId}`, form);
-      } else {
-        await api.post('/Courses', form);
+      const formData = new FormData();
+      formData.append('Title', form.Title);
+      formData.append('Description', form.Description);
+      if (file) {
+        formData.append('mediaFile', file);
       }
-      setForm({ Title: '', Description: '', MediaUrl: '' });
+
+      if (editingCourseId) {
+        // For update, still send to normal endpoint
+        await api.put(`/Courses/${editingCourseId}`, {
+          ...form,
+          MediaUrl: file ? 'UPDATED_THROUGH_BLOB' : '' // optional
+        });
+      } else {
+        await api.post('/Courses/AddCourse', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+      }
+
+      setForm({ Title: '', Description: '' });
+      setFile(null);
       setEditingCourseId(null);
       fetchCourses();
     } catch (error) {
@@ -49,8 +70,7 @@ const CoursesPage = () => {
   const handleEdit = (course) => {
     setForm({
       Title: course.Title || '',
-      Description: course.Description || '',
-      MediaUrl: course.MediaUrl || ''
+      Description: course.Description || ''
     });
     setEditingCourseId(course.CourseId);
   };
@@ -91,12 +111,10 @@ const CoursesPage = () => {
               onChange={handleChange}
             />
             <input
-              type="text"
-              name="MediaUrl"
-              placeholder="Media URL"
+              type="file"
+              name="mediaFile"
               className="form-control"
-              value={form.MediaUrl}
-              onChange={handleChange}
+              onChange={handleFileChange}
             />
             <button type="submit" className="btn btn-primary">
               {editingCourseId ? 'Update' : 'Create'}
@@ -104,7 +122,8 @@ const CoursesPage = () => {
             {editingCourseId && (
               <button type="button" className="btn btn-secondary ml-2" onClick={() => {
                 setEditingCourseId(null);
-                setForm({ Title: '', Description: '', MediaUrl: '' });
+                setForm({ Title: '', Description: '' });
+                setFile(null);
               }}>
                 Cancel
               </button>
@@ -123,11 +142,24 @@ const CoursesPage = () => {
             <div key={course.CourseId} className="border p-4 rounded shadow-sm">
               <h3 className="text-xl font-semibold">{course.Title}</h3>
               <p className="text-gray-700">{course.Description || 'No description provided.'}</p>
+
+              {course.MediaUrl && (
+                <a
+                  href={course.MediaUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 underline mt-2 inline-block"
+                >
+                  📥 Download Material
+                </a>
+              )}
+
               {course.InstructorName && (
                 <p className="text-sm text-gray-600 mt-1">
                   <strong>Instructor:</strong> {course.InstructorName}
                 </p>
               )}
+
               {role === 'Instructor' && (
                 <div className="mt-2 space-x-2">
                   <button className="btn btn-sm btn-outline-primary" onClick={() => handleEdit(course)}>
