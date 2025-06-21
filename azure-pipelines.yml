@@ -1,0 +1,41 @@
+trigger:
+  branches:
+    include:
+      - main
+
+variables:
+  - name: buildDirectory
+    value: 'build'
+
+stages:
+- stage: BuildAndDeploy
+  jobs:
+  - job: BuildJob
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '18.x'
+      displayName: 'Install Node.js'
+
+    - task: CmdLine@2
+      displayName: 'Install and Build React App'
+      inputs:
+        script: |
+          npm install
+          npm run build
+
+    - task: CmdLine@2
+      displayName: 'Check Build Output'
+      inputs:
+        script: |
+          echo "Verifying build output:"
+          ls -la "$(buildDirectory)"
+
+    - task: AzureStaticWebApp@0
+      displayName: 'Deploy to Azure Static Web App'
+      inputs:
+        app_location: '.'
+        output_location: '$(buildDirectory)'
+        azure_static_web_apps_api_token: $(deployment_token)
